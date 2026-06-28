@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بێستوون & سروشت | wedd.tech</title>
+    <title>داوەتنامەی دیجیتاڵی | wedd.tech</title>
     
-    <!-- Google Fonts for premium Kurdish typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;800&family=Zain:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&family=Zain:wght@300;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-color: #0b111e;
-            --panel-bg: rgba(255, 255, 255, 0.03);
-            --border-glow: rgba(212, 175, 55, 0.2);
-            --gold: #d4af37;
-            --platinum: #e5e5e5;
-            --text-muted: #a0aec0;
+            --rose-gold: #C58B93;
+            --rose-dark: #64454A;
+            --text-main: #4A373A;
+            --text-muted: #8A7679;
+            --bg-soft: #FCF8F8;
         }
 
         * {
@@ -27,252 +25,286 @@
             font-family: 'Vazirmatn', sans-serif;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--platinum);
-            background-image: radial-gradient(circle at top, #1a2639 0%, var(--bg-color) 70%);
-            padding: 20px 15px;
+        body, html {
+            background-color: var(--bg-soft);
+            color: var(--text-main);
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        /* SCREEN 1: THE INTERACTIVE REAL PHOTO COVER */
+        .reveal-cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600&auto=format&fit=crop') center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 60px;
+            z-index: 100;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .cover-names {
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .btn-open {
+            background: #FFFFFF;
+            color: var(--rose-dark);
+            border: none;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        /* THE BUTTERFLY ANIMATION LAYER */
+        .butterfly-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(252, 248, 248, 0.95);
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .butterfly-icon {
+            width: 120px;
+            height: 120px;
+            fill: var(--rose-gold);
+            transform: scale(0.2);
+            opacity: 0;
+        }
+
+        /* Trigger Classes for JavaScript */
+        .cover-slide-up {
+            transform: translateY(-100%);
+        }
+
+        .animate-butterfly {
+            animation: popButterfly 1.4s ease-in-out forwards;
+        }
+
+        @keyframes popButterfly {
+            0% { transform: scale(0.3); opacity: 0; }
+            40% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 15px rgba(197,139,147,0.6)); }
+            70% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* SCREEN 2: MAIN INVITATION CONTENT */
+        .main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease 1.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 30px 15px;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .container {
             width: 100%;
-            max-width: 450px; /* Perfect smartphone display width */
+            max-width: 420px;
             text-align: center;
         }
 
-        /* Glassmorphism Panel Styling */
         .card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glow);
-            border-radius: 24px;
-            padding: 35px 25px;
+            background: #FFFFFF;
+            border: 1px solid #F2E5E7;
+            border-radius: 30px;
+            padding: 40px 25px;
             margin-bottom: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 10px 25px rgba(197, 139, 147, 0.08);
         }
 
-        /* Typography */
         .clan-header {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            letter-spacing: 1px;
+            font-weight: 500;
             margin-bottom: 15px;
         }
 
         .welcome-text {
             font-family: 'Zain', sans-serif;
             font-size: 1.6rem;
-            color: var(--platinum);
-            line-height: 1.4;
+            line-height: 1.5;
             margin-bottom: 25px;
         }
 
         .names {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--gold);
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--rose-dark);
             margin: 20px 0;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         .divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            background: linear-gradient(90deg, transparent, var(--rose-gold), transparent);
             margin: 20px auto;
-            width: 60%;
+            width: 50%;
         }
 
-        /* Live Countdown */
-        .countdown-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-        .time-box {
-            flex: 1;
-        }
-        .time-num {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--gold);
-        }
-        .time-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* Interactive Buttons & Inputs */
         .btn-maps {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #d4af37 0%, #aa841b 100%);
-            color: #000;
-            font-weight: bold;
+            background: var(--rose-gold);
+            color: #FFFFFF;
             text-decoration: none;
             padding: 14px 28px;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             width: 100%;
-            margin-top: 15px;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-maps:active {
-            transform: scale(0.98);
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 6px 15px rgba(197, 139, 147, 0.25);
         }
 
         .form-group {
             text-align: right;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             font-size: 0.85rem;
-            color: var(--gold);
+            color: var(--rose-dark);
+            font-weight: 500;
             margin-bottom: 6px;
-            padding-right: 4px;
         }
 
         .form-control {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            color: #fff;
+            background: #FFFBFB;
+            border: 1px solid #F2E5E7;
+            border-radius: 14px;
+            padding: 14px;
+            color: var(--text-main);
             font-size: 0.95rem;
             outline: none;
             text-align: right;
         }
 
-        .form-control:focus {
-            border-color: var(--gold);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        select.form-control option {
-            background-color: var(--bg-color);
-            color: #fff;
-        }
-
         .btn-submit {
             background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
+            border: 1.5px solid var(--rose-gold);
+            color: var(--rose-gold);
             width: 100%;
             padding: 14px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: var(--gold);
-            color: #000;
-        }
-
-        .footer-credit {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.2);
-            margin: 20px 0;
-            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-
-        <!-- CARD 1: THE INVITATION MAIN TEXT -->
-        <div class="card">
-            <p class="clan-header">ڕێز و بنەماڵەی شێخانی & بنەماڵەی کاکەیی</p>
-            <div class="divider"></div>
-            
-            <p class="welcome-text">
-                بەخۆشحاڵییەوە بانگهێشتتان دەکەین بۆ ئامادەبوون لە شەوی شادبوونی دڵەکانمان و گێڕانی ئاهەنگی هاوسەرگیریمان. ئامادەبوونی ئێوە ڕازاوەیی بە کۆڕەکەمان دەبەخشێت.
-            </p>
-            
-            <h1 class="names">بێستوون <br>&<br> سروشت</h1>
-            
-            <div class="divider"></div>
-            
-            <!-- Dynamic Countdown Placeholder -->
-            <div class="countdown-container">
-                <div class="time-box"><div class="time-num">١2</div><div class="time-label">ڕۆژ</div></div>
-                <div class="time-box"><div class="time-num">٠٥</div><div class="time-label">کاتژمێر</div></div>
-                <div class="time-box"><div class="time-num">٤2</div><div class="time-label">خولەک</div></div>
-            </div>
-        </div>
-
-        <!-- CARD 2: LOGISTICS & LOCATION -->
-        <div class="card">
-            <h3 style="color: var(--gold); margin-bottom: 15px;">کات و شوێن</h3>
-            <p style="font-size: 1.1rem; margin-bottom: 8px;">ڕۆژی هەینی، ١٦ی ئۆکتۆبەری ٢٠٢٦</p>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">کاتژمێر ٤:٣٠ی ئێوارە</p>
-            
-            <p style="font-weight: bold; margin-bottom: 5px;">تەلاری کۆنفڕانس و هۆڵەکان</p>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">سلێمانی - شەقامی بازنەیی مەلیک مەحموود</p>
-            
-            <a href="https://maps.google.com" target="_blank" class="btn-maps">
-                📍 کردنەوەی شوێن لەسەر نەخشە
-            </a>
-            
-            <div class="divider" style="margin: 25px auto 15px auto;"></div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">👔 شێوازی جلوبەرگ: جلی ڕەسەنی کوردی یان فەرمی</p>
-        </div>
-
-        <!-- CARD 3: THE INTERACTIVE RSVP & SONG REQUEST FORM -->
-        <div class="card">
-            <h3 style="color: var(--gold); margin-bottom: 20px;">پشتڕاستکردنەوەی ئامادەبوون</h3>
-            
-            <form id="rsvpForm">
-                <div class="form-group">
-                    <label for="guestName">ناوی تەواو</label>
-                    <input type="text" id="guestName" class="form-control" placeholder="ناوی سیانی بنووسە" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="status">ئامادەبوون</label>
-                    <select id="status" class="form-control">
-                        <option value="yes">بەخۆشحاڵییەوە دێم</option>
-                        <option value="no">ناتوانم ئامادەبم</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="count">ژمارەی یاوەران (کەس)</label>
-                    <select id="count" class="form-control">
-                        <option value="1">تەنها خۆم</option>
-                        <option value="2">خۆم + ١ کەس</option>
-                        <option value="3">خۆم + ٢ کەس</option>
-                        <option value="4">خۆم + ٣ کەس</option>
-                        <option value="5">خۆم + ٤ کەس یان زیاتر</option>
-                    </select>
-                </div>
-
-                <!-- Custom feature: The Halperkê Song Request -->
-                <div class="form-group">
-                    <label for="song">🎵 پێشنیارکردنی گۆرانی بۆ هەڵپەڕکێ</label>
-                    <input type="text" id="song" class="form-control" placeholder="ناو یان هونەرمەندی گۆرانییەکە">
-                </div>
-
-                <button type="submit" class="btn-submit" style="margin-top: 10px;">ناردنی وەڵام</button>
-            </form>
-        </div>
-
-        <!-- FOOTER CREDIT (Your branding) -->
-        <p class="footer-credit">POWERED BY WEDD.TECH</p>
-
+    <!-- SCREEN 1: THE PREMIUM REAL PHOTO COVER LAYER -->
+    <div class="reveal-cover" id="coverScreen">
+        <h1 class="cover-names">بێستوون & سروشت</h1>
+        <button class="btn-open" onclick="openInvitation()">کردنەوەی داوەتنامە ✨</button>
     </div>
 
+    <!-- TRANSITION LAYER: THE BUTTERFLY POP-UP -->
+    <div class="butterfly-overlay" id="butterflyOverlay">
+        <!-- SVG Beautiful Butterfly Icon -->
+        <svg class="butterfly-icon" id="butterfly" viewBox="0 0 64 64">
+            <path d="M32,24C32,14,20,4,10,12C4,17,6,28,14,34C22,40,30,46,32,54C34,46,42,40,50,34C58,28,60,17,54,12C44,4,32,14,32,24z"/>
+        </svg>
+    </div>
+
+    <!-- SCREEN 2: THE ACTUAL PREMIUM CARD DETAILS -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <div class="card">
+                <p class="clan-header">ڕێز و بنەماڵەی شێخانی & بنەماڵەی کاکەیی</p>
+                <div class="divider"></div>
+                <p class="welcome-text">
+                    بۆنەی شادبوونی دڵەکانمان، بەخۆشحاڵییەوە بانگهێشتتان دەکەین بۆ ئامادەبوون لە شەوی کۆبوونەوەی خۆشەویستیمان. ئامادەبوونی ئێوە خۆشییەکانمان تەواو دەکات.
+                </p>
+                <h1 class="names">بێستوون & سروشت</h1>
+                <div class="divider"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--rose-dark); margin-bottom: 15px;">کات و شوێن</h3>
+                <p style="font-size: 1.1rem; margin-bottom: 6px; font-weight: 500;">ڕۆژی هەینی، ١٦ی ئۆکتۆبەری ٢٠٢٦</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">کاتژمێر ٤:٣٠ی ئێوارە</p>
+                <p style="font-weight: 700;">تەلاری کۆنفڕانس و هۆڵەکان</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">سلێمانی - شەقامی بازنەیی مەلیک مەحموود</p>
+                
+                <a href="https://maps.google.com" target="_blank" class="btn-maps">🌸 کردنەوەی هۆڵ لەسەر نەخشە</a>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--rose-dark); margin-bottom: 20px;">پشتڕاستکردنەوەی ئامادەبوون</h3>
+                <form id="rsvpForm">
+                    <div class="form-group">
+                        <label>ناوی تەواو</label>
+                        <input type="text" class="form-control" placeholder="ناوی بەڕێزتان بنووسن" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ئامادەبوون</label>
+                        <select class="form-control">
+                            <option>بەخۆشحاڵییەوە ئامادە دەبم</option>
+                            <option>داوای لێبوردن دەکەم</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">ناردنی نامەی وەڵام</button>
+                </form>
+            </div>
+            <p style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 2px;">WEDD.TECH</p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT TO HANDLE THE TIMING CHOREOGRAPHY -->
+    <script>
+        function openInvitation() {
+            const cover = document.getElementById('coverScreen');
+            const overlay = document.getElementById('butterflyOverlay');
+            const butterfly = document.getElementById('butterfly');
+            const mainContent = document.getElementById('mainContent');
+
+            // 1. Slide the real photo cover up out of view
+            cover.classList.add('cover-slide-up');
+
+            // 2. Activate the butterfly transition layer
+            overlay.style.opacity = "1";
+            butterfly.classList.add('animate-butterfly');
+
+            // 3. Fade in the actual invitation cards smoothly right as the butterfly scales out
+            setTimeout(() => {
+                overlay.style.opacity = "0";
+                mainContent.classList.add('visible');
+            }, 1200);
+        }
+    </script>
 </body>
 </html>
