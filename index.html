@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>B&S | Luxury Digital Experience</title>
+    <title>B&S | The Luxury Kurdish Wedding Experience</title>
     
-    <!-- Premium Font Kits -->
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Vazirmatn:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Vazirmatn:wght@200;400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --canvas: #FBF9F6;
-            --ink: #1C1717;
-            --muted-ink: #655E5E;
-            --accent-gold: #D4AF37;
-            --silk-white: #FFFFFF;
-            --soft-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
-            --nav-shadow: 0 -10px 40px rgba(0, 0, 0, 0.03);
+            --silk-white: #FFFDFB;
+            --ivory: #FDFBF7;
+            --champagne: #D4AF37;
+            --champagne-glow: rgba(212, 175, 55, 0.25);
+            --deep-espresso: #251F1D;
+            --taupe: #7A6F6B;
+            --motion-curve: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         * {
@@ -30,475 +30,515 @@
         }
 
         body, html {
-            background-color: var(--canvas);
-            color: var(--ink);
+            background-color: var(--ivory);
+            color: var(--deep-espresso);
             height: 100%;
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* App container constraint for perfect mobile rendering */
-        .app-viewport {
+        /* 1. CINEMATIC BACKGROUND MOTION ENGINE (Ken Burns Effect) */
+        .bg-motion-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bg-motion-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1);
+            animation: kenBurnsEffect 20s infinite alternate var(--motion-curve);
+        }
+
+        @keyframes kenBurnsEffect {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.12) translate(-1%, -1%); }
+        }
+
+        /* Ambient Falling Petals */
+        .petal-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #FFF1F3 0%, #FCDDEC 100%);
+            border-radius: 12% 75% 15% 75%;
+            animation: fall infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-5vh) rotate(0deg) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(105vh) rotate(540deg) translateX(80px); opacity: 0; }
+        }
+
+        /* Mobile Viewport Constraint */
+        .app-container {
             width: 100%;
             max-width: 450px;
             margin: 0 auto;
-            background: var(--canvas);
+            background: var(--ivory);
             min-height: 100vh;
-            padding-bottom: 90px; /* Space for the floating app dock */
+            padding-bottom: 110px;
             position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.03);
         }
 
-        /* 1. INTRO SPLASH OVERLAY WITH 3D FLAPPING BUTTERFLY */
-        .app-splash {
+        /* 2. CINEMATIC COVER GATE SCREEN */
+        .cinematic-gate {
             position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(28,23,23,0.2), rgba(28,23,23,0.85)), 
-                        url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600&auto=format&fit=crop') center center/cover;
-            z-index: 200;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 450px; height: 100%;
+            z-index: 600;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 60px 20px;
+            padding: 80px 30px;
             text-align: center;
-            transition: all 1s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: all 1.4s cubic-bezier(0.76, 0, 0.24, 1);
         }
 
-        .splash-header h2 {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-gold);
-            font-size: 1rem;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-
-        .splash-header h1 {
-            color: var(--silk-white);
-            font-size: 2.5rem;
-            font-weight: 200;
-        }
-
-        /* 3D Butterfly Engine inside Splash */
-        .butterfly-container {
-            perspective: 500px;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-            opacity: 1;
-            transition: transform 0.5s ease;
-        }
-
-        .butterfly-3d {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transform: rotateX(30deg) rotateY(20deg);
-        }
-
-        .wing-3d {
-            position: absolute;
-            width: 40px;
-            height: 60px;
-            background: linear-gradient(135deg, #FFF 0%, var(--accent-gold) 100%);
-            border-radius: 50% 50% 10% 90% / 60% 40% 60% 40%;
-        }
-
-        .wing-3d.left {
-            left: 0;
-            transform-origin: right center;
-            animation: flapLeft 0.12s infinite ease-in-out;
-        }
-
-        .wing-3d.right {
-            right: 0;
-            transform-origin: left center;
-            border-radius: 50% 50% 90% 10% / 40% 60% 40% 60%;
-            animation: flapRight 0.12s infinite ease-in-out;
-        }
-
-        @keyframes flapLeft { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(65deg); } }
-        @keyframes flapRight { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(-65deg); } }
-
-        .btn-enter-app {
-            background: var(--silk-white);
-            color: var(--ink);
-            border: none;
-            padding: 18px 45px;
-            border-radius: 100px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* 2. PERSISTENT APP DOCK (Navigation) */
-        .app-dock {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 12px 25px;
-            border-radius: 100px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 100;
-            box-shadow: var(--nav-shadow);
-            opacity: 0;
-            transition: opacity 0.5s ease 0.5s;
-        }
-
-        .dock-item {
-            color: var(--muted-ink);
-            text-decoration: none;
+        .gate-title-pack h2 {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--champagne);
             font-size: 0.8rem;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .gate-title-pack h1 {
+            color: var(--silk-white);
+            font-size: 2.8rem;
+            font-weight: 200;
+            line-height: 1.3;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Fluid 3D Flapping Butterfly Trigger */
+        .butterfly-3d-box {
+            perspective: 700px;
+            width: 80px; height: 80px;
+            transition: all 0.8s var(--motion-curve);
+        }
+
+        .butterfly-wings {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(25deg) rotateY(20deg) rotateZ(-10deg);
+        }
+
+        .wing-half {
+            position: absolute; width: 40px; height: 55px;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--champagne) 100%);
+            box-shadow: 0 0 30px var(--champagne-glow);
+        }
+
+        .wing-half.left {
+            left: 0; border-radius: 60% 40% 15% 85%;
+            transform-origin: right center;
+            animation: ultraFlapLeft 0.12s infinite ease-in-out;
+        }
+
+        .wing-half.right {
+            right: 0; border-radius: 40% 60% 85% 15%;
+            transform-origin: left center;
+            animation: ultraFlapRight 0.12s infinite ease-in-out;
+        }
+
+        @keyframes ultraFlapLeft { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(65deg); } }
+        @keyframes ultraFlapRight { 0%, 100% { transform: rotateY(0deg); } 50% { transform: rotateY(-65deg); } }
+
+        .btn-cinematic-open {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            color: var(--silk-white);
+            padding: 20px 45px;
+            font-size: 0.85rem;
             font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            border-radius: 100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            position: relative; z-index: 2;
         }
 
-        .dock-item.active {
-            color: var(--accent-gold);
+        .btn-cinematic-open:active {
+            background: var(--silk-white);
+            color: var(--deep-espresso);
+            transform: scale(0.96);
         }
 
-        /* 3. EDITORIAL CONTENT BLOCKS */
-        .app-section {
-            padding: 50px 24px;
+        /* 3. DYNAMIC SCROLL ANIMATED SECTIONS */
+        .scroll-section {
+            padding: 70px 24px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.215, 0.610, 0.355, 1);
         }
 
-        .app-section.revealed {
+        /* Triggered dynamically when entering viewport */
+        .scroll-section.animate-in {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* High-End Editorial Hero Showcase */
-        .editorial-showcase {
-            position: relative;
-            margin-top: 20px;
-            margin-bottom: 40px;
+        .editorial-lbl {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1.15rem;
+            color: var(--champagne); margin-bottom: 10px; display: block;
         }
 
-        .hero-img-frame {
-            width: 80%;
-            height: 380px;
-            border-radius: 200px 200px 0 0; /* Elegant Arch Shape */
-            overflow: hidden;
-            box-shadow: var(--soft-shadow);
-            margin-right: auto;
+        .section-header {
+            font-size: 2.2rem; font-weight: 200;
+            line-height: 1.3; margin-bottom: 30px;
         }
 
-        .hero-img-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        /* Asymmetric Luxury Kurdish Portrait Showcase */
+        .kurdish-composition {
+            position: relative; width: 100%; height: 440px; margin: 40px 0;
         }
 
-        .hero-overlap-card {
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 65%;
-            background: var(--silk-white);
-            padding: 25px 20px;
-            box-shadow: var(--soft-shadow);
-            text-align: right;
-            border-left: 3px solid var(--accent-gold);
+        .frame-main {
+            width: 82%; height: 380px; overflow: hidden;
+            box-shadow: 0 25px 55px rgba(0,0,0,0.06); margin-right: auto;
+            border-radius: 4px;
         }
 
-        .section-tag {
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            color: var(--accent-gold);
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            display: block;
+        .frame-main img { width: 100%; height: 100%; object-fit: cover; }
+
+        .frame-overlap {
+            position: absolute; bottom: 0; left: 0;
+            width: 55%; height: 210px; overflow: hidden;
+            border: 8px solid var(--ivory);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-radius: 4px;
         }
 
-        .editorial-title {
-            font-size: 2.2rem;
-            font-weight: 200;
-            line-height: 1.2;
-            color: var(--ink);
+        .frame-overlap img { width: 100%; height: 100%; object-fit: cover; }
+
+        .editorial-desc {
+            font-size: 1.05rem; line-height: 1.9;
+            color: var(--taupe); text-align: justify;
         }
 
-        .editorial-p {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: var(--muted-ink);
-            text-align: justify;
-            font-weight: 400;
+        /* Premium Schedule Setup */
+        .schedule-timeline { margin-top: 40px; }
+        
+        .schedule-item {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 26px 0; border-bottom: 1px solid #ECE6DC;
         }
 
-        /* Bento Grid Timeline Structure */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
+        .schedule-time {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 600; color: var(--champagne);
+            width: 70px; text-align: right;
         }
 
-        .bento-cell {
-            background: var(--silk-white);
-            padding: 20px;
-            border-radius: 24px;
-            box-shadow: var(--soft-shadow);
-            text-align: right;
+        .schedule-content { flex: 1; text-align: right; padding-right: 25px; }
+        .schedule-content strong { font-size: 1.05rem; display: block; margin-bottom: 5px; }
+        .schedule-content p { font-size: 0.85rem; color: var(--taupe); line-height: 1.5; }
+
+        /* Minimal Luxury Form Fields */
+        .premium-input-box { margin-bottom: 35px; text-align: right; }
+        .premium-input-box label {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+            color: var(--deep-espresso); display: block; margin-bottom: 8px;
         }
 
-        .bento-cell.full-width {
-            grid-column: span 2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .bento-time {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-gold);
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        /* Luxury Clean Form Styling */
-        .luxury-field-group {
-            margin-bottom: 25px;
-            text-align: right;
-        }
-
-        .luxury-field-group label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--ink);
-            font-weight: 700;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .luxury-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid #E1DAD5;
-            padding: 12px 4px;
-            font-size: 1rem;
-            color: var(--ink);
-            outline: none;
+        .premium-input {
+            width: 100%; background: transparent; border: none;
+            border-bottom: 1.5px solid #D8CFC4; padding: 14px 4px;
+            font-size: 1rem; color: var(--deep-espresso); outline: none;
             transition: border-color 0.3s;
         }
 
-        .luxury-input:focus {
-            border-color: var(--accent-gold);
+        .premium-input:focus { border-color: var(--champagne); }
+
+        .btn-submit-luxury {
+            background: var(--deep-espresso); color: var(--silk-white);
+            width: 100%; padding: 20px; border: none; border-radius: 100px;
+            font-size: 0.9rem; font-weight: 700; letter-spacing: 2px;
+            cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .btn-luxury-submit {
-            background: var(--ink);
-            color: var(--silk-white);
-            width: 100%;
-            padding: 18px;
-            border-radius: 100px;
-            border: none;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: background 0.3s;
+        /* PERSISTENT FLOATING NAVIGATION DOCK */
+        .app-dock-navigation {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 390px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 16px 20px; border-radius: 100px;
+            display: flex; justify-content: space-around;
+            z-index: 100; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+            opacity: 0; transition: opacity 0.6s ease;
         }
 
-        .btn-luxury-submit:active {
-            background: var(--muted-ink);
+        .dock-anchor {
+            color: var(--taupe); text-decoration: none;
+            font-size: 0.85rem; font-weight: 700;
         }
+        .dock-anchor.active { color: var(--champagne); }
+
+        /* 4. FLOATING INTERACTIVE AUDIO CONTROLLER */
+        .floating-audio-widget {
+            position: fixed; top: 20px; left: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.6);
+            padding: 8px 16px; border-radius: 40px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 700; box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            cursor: pointer; display: none; /* Displayed after unveil action */
+        }
+
+        .audio-wave-bars { display: flex; gap: 3px; align-items: center; height: 14px; }
+        .audio-bar { width: 2px; height: 10px; background: var(--champagne); transition: all 0.3s; }
+        
+        .audio-bar.playing { animation: wavePulse 0.6s infinite alternate ease-in-out; }
+        .audio-bar:nth-child(2) { animation-delay: 0.15s; }
+        .audio-bar:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes wavePulse { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1.5); } }
     </style>
 </head>
 <body>
 
-    <div class="app-viewport">
+    <!-- HTML5 BACKGROUND MUSIC ENGINE -->
+    <!-- Replace this URL link with your selected Kurdish wedding audio file track (.mp3) -->
+    <audio id="invitationMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-        <!-- 1. ENTRY CANVAS SCREEN (Dismissed on CTA Tap) -->
-        <div class="app-splash" id="appSplash">
-            <div class="splash-header">
-                <h2>THE WEDDING EXPERIENCE</h2>
+    <!-- FLOATING PETAL MECHANIC -->
+    <div class="petal-layer" id="petalLoom"></div>
+
+    <div class="app-container">
+
+        <!-- 1. INTRO SPLASH HUB -->
+        <div class="cinematic-gate" id="gateOverlay">
+            <div class="bg-motion-container">
+                <!-- Cover Image Placement: High-fashion Kurdish couple portrait placeholder -->
+                <img class="bg-motion-img" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800" alt="Cinematic Cover Background">
+            </div>
+
+            <div class="gate-title-pack" style="position: relative; z-index: 2;">
+                <h2>THE CINEMATIC EXPERIENCE</h2>
                 <h1>بێستوون & سروشت</h1>
             </div>
 
-            <!-- Flapping 3D Engine Element -->
-            <div class="butterfly-container" id="splashButterfly">
-                <div class="butterfly-3d">
-                    <div class="wing-3d left"></div>
-                    <div class="wing-3d right"></div>
+            <div class="butterfly-3d-box" id="gateButterfly" style="position: relative; z-index: 2;">
+                <div class="butterfly-wings">
+                    <div class="wing-half left"></div>
+                    <div class="wing-half right"></div>
                 </div>
             </div>
 
-            <button class="btn-enter-app" onclick="dismissSplash()">
-                <span>بینینی داوەتنامەکە</span>
-                <span style="font-size: 0.7rem; opacity: 0.6; font-weight: 400;">TAP TO UNVEIL</span>
+            <button class="btn-cinematic-open" onclick="launchCinematicApp()">
+                ENTER INVITATION
             </button>
         </div>
 
-        <!-- 2. APP CONTROL DOCK -->
-        <nav class="app-dock" id="appDock">
-            <a href="#home" class="dock-item active">✨ سەرەکی</a>
-            <a href="#details" class="dock-item">📅 کات و شوێن</a>
-            <a href="#rsvp" class="dock-item">✉️ وەڵامدانەوە</a>
+        <!-- LIVE AUDIO CONTROL FLOATING BAR -->
+        <div class="floating-audio-widget" id="audioWidget" onclick="toggleAudioState()">
+            <div class="audio-wave-bars">
+                <div class="audio-bar playing" id="b1"></div>
+                <div class="audio-bar playing" id="b2"></div>
+                <div class="audio-bar playing" id="b3"></div>
+            </div>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--deep-espresso);" id="audioStatusLabel">MUSIC ON</span>
+        </div>
+
+        <!-- APP PERSISTENT NAVIGATION DOCK -->
+        <nav class="app-dock-navigation" id="appNavigationDock">
+            <a href="#home" class="dock-anchor active">سەرەکی</a>
+            <a href="#details" class="dock-anchor">مەراسیم</a>
+            <a href="#rsvp" class="dock-anchor">وەڵامدانەوە</a>
         </nav>
 
-        <!-- 3. MAIN APP HOMEPAGE SECTION -->
-        <section class="app-section" id="home">
-            <span class="section-tag">THE INVITATION</span>
-            <h1 class="editorial-title">بێستوون <br><span style="font-family:'Playfair Display', serif; font-style: italic;">&</span> سروشت</h1>
+        <!-- 2. MAIN COUPLINGS EXHIBIT BLOCK -->
+        <section class="scroll-section" id="home">
+            <span class="editorial-lbl">The Royal Celebration</span>
+            <h1 class="section-header">شەوی هاوسەرگیری <br>بێستوون & سروشت</h1>
             
-            <div class="editorial-showcase">
-                <div class="hero-img-frame">
-                    <!-- Real Premium Couple Content Placeholder -->
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=600&auto=format&fit=crop" alt="Wedding">
+            <!-- Curated Kurdish Frame Layout Portfolio -->
+            <div class="kurdish-composition">
+                <div class="frame-main">
+                    <!-- Placeholder representing modern Kurdish bridal photoshoot style -->
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600" alt="Kurdish Bridal Main Portrait">
                 </div>
-                <div class="hero-overlap-card">
-                    <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 700;">خێزانی شێخانی & کاکەیی</span>
-                    <p style="font-size: 0.85rem; color: var(--muted-ink); margin-top: 4px;">بەخۆشحاڵییەوە ئێوەی ئازیز بانگهێشت دەکەن</p>
+                <div class="frame-overlap">
+                    <!-- Detail layout frame spot -->
+                    <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=400" alt="Traditional Texture Overlap Close-up">
                 </div>
             </div>
 
-            <p class="editorial-p">
-                عەشق دەستپێکی گەشتێکی بێ کۆتاییە. بە شانازی و خۆشحاڵییەکی بێپایانەوە، ئێوەی بەڕێز و ئازیز بانگهێشت دەکەین بۆ شایەتی دان لەسەر جوانترین بەڵێنی ژیانمان. ئامادەبوونی ئێوە ڕوناکی دەبەخشێتە کۆڕەکەمان.
+            <p class="editorial-desc">
+                خۆشەویستی گەورەترین مەودای گەردوون کۆدەکاتەوە لە نێوان ترپەی دڵی دوو مرۆڤدا. بە شانازی و شکۆمەندییەکی بێپایانەوە، بنەماڵەی بەڕێزی (شێخانی & کاکەیی) ئێوەی ئازیز و دڵسۆز بانگهێشت دەکەن بۆ ئامادەبوون لە شەوی گۆڕینەوەی پیرۆزترین بەڵێنی ژیانمان. عەشق و پیرۆزی مەراسیمەکەمان بە بوونی ئێوەی ڕێزدار تەواو دەبێت.
             </p>
         </section>
 
-        <!-- 4. LOGISTICS AND SCHEDULE SECTION -->
-        <section class="app-section" id="details" style="background: #F5F2EC;">
-            <span class="section-tag">THE CELEBRATION</span>
-            <h2 class="editorial-title" style="font-size: 1.8rem; margin-bottom: 10px;">بەرنامەی ئاهەنگ</h2>
-            <p style="color: var(--muted-ink); font-size: 0.9rem; text-align: right;">هەینی، ١٦ی ئۆکتۆبەری ٢٠٢٦ - تەلاری کۆنفڕانس و هۆڵەکان، سلێمانی</p>
+        <!-- 3. DETAILED EVENT TIMELINE TIMETABLE BLOCK -->
+        <section class="scroll-section" id="details" style="background: #F6F1E9;">
+            <span class="editorial-lbl">The Order of Events</span>
+            <h2 class="section-header" style="font-size: 1.9rem;">بەرنامەی شەوەکە</h2>
+            <p style="color: var(--taupe); font-size: 0.95rem; text-align: right; line-height: 1.6;">هەینی، ١٦ی ئۆکتۆبەری ٢٠٢٦<br>تەلاری کۆنفڕانس و هۆڵەکان، سلێمانی</p>
 
-            <!-- Bento App UI Layout grid -->
-            <div class="bento-grid">
-                <div class="bento-cell full-width">
-                    <span style="font-weight: 700; font-size: 0.95rem;">کاتژمێر ٤:٣٠ی ئێوارە</span>
-                    <span style="color: var(--accent-gold); font-weight: 700;">هاتنی میوانان 🌸</span>
-                </div>
-                <div class="bento-cell">
-                    <span class="bento-time">05:30</span>
-                    <strong style="font-size: 0.9rem; display:block; margin-bottom:4px;">مەراسیمی مارەکردن</strong>
-                    <span style="font-size: 0.8rem; color: var(--muted-ink);">ئاڵوگۆڕی ئەڵقەکان</span>
-                </div>
-                <div class="bento-cell">
-                    <span class="bento-time">07:00</span>
-                    <strong style="font-size: 0.9rem; display:block; margin-bottom:4px;">شەوی ئاهەنگ</strong>
-                    <span style="font-size: 0.8rem; color: var(--muted-ink);">گۆرانی و کۆڕی کوردی</span>
-                </div>
-                <div class="bento-cell full-width" style="background: var(--ink); color: var(--silk-white);">
-                    <div style="text-align: right;">
-                        <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; display:block;">LOCATION MAP</span>
-                        <span style="font-size: 0.85rem; opacity: 0.8;">سلێمانی - شەقامی بازنەیی مەلیک مەحموود</span>
+            <div class="schedule-timeline">
+                <div class="schedule-item">
+                    <div class="schedule-time">04:30</div>
+                    <div class="schedule-content">
+                        <strong>پێشوازی شایستە لە میوانان</strong>
+                        <p>کۆبوونەوەی سەرەتایی خێزان و میوانانی بەڕێز لە هۆڵەکەدا</p>
                     </div>
-                    <a href="https://maps.google.com" target="_blank" style="color: var(--accent-gold); font-size: 1.3rem; text-decoration: none;">📍</a>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-time">05:30</div>
+                    <div class="schedule-content">
+                        <strong>مەراسیمی پیرۆزی مارەکردن</strong>
+                        <p>ساتەوەختی گرێدانی پەیمانی هەمیشەیی و هاوسەرگیری فەرمی</p>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-time">07:00</div>
+                    <div class="schedule-content">
+                        <strong>دەستپێکی ئاهەنگی شایی و هەڵپەڕکێ</strong>
+                        <p>شەوی دڵخۆشی بە گۆرانی ڕەسەنی کوردی و بەستنی کۆڕی هاوبەش</p>
+                    </div>
                 </div>
             </div>
+
+            <a href="https://maps.google.com" target="_blank" style="display: block; text-align: center; color: var(--deep-espresso); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-decoration: none; margin-top: 40px; border-bottom: 1.5px solid var(--deep-espresso); padding-bottom: 4px; width: fit-content; margin-left: auto;">LOCATION ON MAP 📍</a>
         </section>
 
-        <!-- 5. MULTI-STEP RESPONSE CAPTURE SYSTEM (RSVP) -->
-        <section class="app-section" id="rsvp">
-            <span class="section-tag">ATTENDANCE</span>
-            <h2 class="editorial-title" style="font-size: 1.8rem; margin-bottom: 25px;">پشتڕاستکردنەوە</h2>
+        <!-- 4. LIVE RESPONSE CARD SUBMIT ARCHIVE -->
+        <section class="scroll-section" id="rsvp">
+            <span class="editorial-lbl">Guest Response</span>
+            <h2 class="section-header" style="font-size: 1.9rem; margin-bottom: 40px;">پشتڕاستکردنەوەی جەنابتان</h2>
             
-            <form id="luxuryForm">
-                <div class="luxury-field-group">
-                    <label>ناوی تەواوی بەڕێزتان</label>
-                    <input type="text" class="luxury-input" placeholder="تکایە ناوەکەت بنووسە" required>
+            <form id="appLuxuryForm" onsubmit="event.preventDefault(); alert('وەڵامەکەت تۆمارکرا ✨');">
+                <div class="premium-input-box">
+                    <label>ناوی سیانی میوان</label>
+                    <input type="text" class="premium-input" placeholder="تکایە ناوی تەواوت بنووسە" required>
                 </div>
 
-                <div class="luxury-field-group">
-                    <label>ئامادەبوونی ئێوە</label>
-                    <select class="luxury-input" style="background: transparent; border-radius: 0;">
-                        <option value="yes">بەخۆشحاڵییەوە ئامادە دەبم</option>
-                        <option value="no">مەخابن، ناتوانم ئامادەبم</option>
+                <div class="premium-input-box">
+                    <label>هاوڕێیەتی ئێوە</label>
+                    <select class="premium-input" style="border-radius: 0;">
+                        <option value="yes">بە شانازییەوە شەرەفی ئامادەبوونم دەبێت</option>
+                        <option value="no">داوای لێبوردن دەکەم، ناتوانم ئامادەبم</option>
                     </select>
                 </div>
 
-                <div class="luxury-field-group">
-                    <label>یاوەران (ژمارەی میوان)</label>
-                    <select class="luxury-input" style="background: transparent; border-radius: 0;">
-                        <option value="1">تەنها خۆم</option>
-                        <option value="2">خۆم + ١ کەس</option>
-                        <option value="3">خۆم + ٢ کەس</option>
-                        <option value="4">خێزانی</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-luxury-submit">ناردنی وەڵامنامە</button>
+                <button type="submit" class="btn-submit-luxury">SUBMIT INVITATION</button>
             </form>
         </section>
 
     </div>
 
     <script>
-        // Choreograph the full app viewport initialization sequence
-        function dismissSplash() {
-            const splash = document.getElementById('appSplash');
-            const dock = document.getElementById('appDock');
-            const butterfly = document.getElementById('splashButterfly');
-            
-            // 1. Visual burst on the butterfly right before transition triggers
-            butterfly.style.transform = "scale(4) rotateY(180deg)";
-            butterfly.style.opacity = "0";
+        const musicTrack = document.getElementById('invitationMusic');
 
-            // 2. Beautiful swipe up and fade out of overlay 
-            setTimeout(() => {
-                splash.style.transform = "translateY(-100%) translateX(-50%)";
-                splash.style.opacity = "0";
-            }, 300);
-
-            // 3. Reveal the actual core interactive web app view smoothly
-            setTimeout(() => {
-                dock.style.opacity = "1";
-                // Trigger reveal for all editorial blocks scroll zones
-                document.querySelectorAll('.app-section').forEach(section => {
-                    section.classList.add('revealed');
-                });
-            }, 800);
+        // Continuous falling petal system
+        function craftPetals() {
+            const loom = document.getElementById('petalLoom');
+            for(let i=0; i<15; i++) {
+                let petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.width = Math.random() * 10 + 8 + 'px';
+                petal.style.height = Math.random() * 14 + 10 + 'px';
+                petal.style.animationDelay = Math.random() * 10 + 's';
+                petal.style.animationDuration = Math.random() * 7 + 6 + 's';
+                loom.appendChild(petal);
+            }
         }
 
-        // Active navigation link switching observer script logic
-        const sections = document.querySelectorAll('.app-section');
-        const navItems = document.querySelectorAll('.dock-item');
+        // Handles the interactive app launch and audio system activation
+        function launchCinematicApp() {
+            const gate = document.getElementById('gateOverlay');
+            const dock = document.getElementById('appNavigationDock');
+            const butterfly = document.getElementById('gateButterfly');
+            const widget = document.getElementById('audioWidget');
 
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 120) {
-                    current = section.getAttribute('id');
+            // 1. Play the music track immediately on direct user input tap
+            musicTrack.play().catch(err => console.log("Audio gesture info:", err));
+
+            // 2. Trigger the structural scaling exit 
+            butterfly.style.transform = "scale(6) rotateZ(45deg)";
+            butterfly.style.opacity = "0";
+
+            setTimeout(() => {
+                gate.style.transform = "translateY(-100%) translateX(-50%)";
+                gate.style.opacity = "0";
+            }, 400);
+
+            setTimeout(() => {
+                gate.style.display = "none";
+                dock.style.opacity = "1";
+                widget.style.display = "flex";
+                craftPetals();
+                initScrollObserver();
+            }, 1200);
+        }
+
+        // Custom toggle audio player execution logic
+        function toggleAudioState() {
+            const label = document.getElementById('audioStatusLabel');
+            const bars = document.querySelectorAll('.audio-bar');
+            
+            if (musicTrack.paused) {
+                musicTrack.play();
+                label.innerText = "MUSIC ON";
+                bars.forEach(b => b.classList.add('playing'));
+            } else {
+                musicTrack.pause();
+                label.innerText = "MUTED";
+                bars.forEach(b => b.classList.remove('playing'));
+            }
+        }
+
+        // Intersection Observer logic for smooth reveal movements on scroll
+        function initScrollObserver() {
+            const sections = document.querySelectorAll('.scroll-section');
+            const options = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        updateActiveDockItem(entry.target.getAttribute('id'));
+                    }
+                });
+            }, options);
+
+            sections.forEach(sec => observer.observe(sec));
+        }
+
+        function updateActiveDockItem(id) {
+            const anchors = document.querySelectorAll('.dock-anchor');
+            anchors.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(id)) {
+                    a.classList.add('active');
                 }
             });
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href').includes(current)) {
-                    item.classList.add('active');
-                }
-            });
-        });
+        }
     </script>
 </body>
 </html>
